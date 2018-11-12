@@ -4,38 +4,27 @@ import math
 from sklearn.manifold import TSNE
 import numpy as np
 import matplotlib.pyplot as plt
+from closest_words import closestwords_tsnescatterplot
+from find_in_doc import check_words
+import sys
 
-model = gensim.models.Word2Vec.load("word2vec.model")
-value = model.wv.most_similar (positive=['beautiful'], topn=10)
-#print(model.wv['computer'])
-#print(value)
+def draw_plt(nummodel, personnality):
+    wordlist1 = ['acceptance', 'broad-mindedness', 'impartiality','interest','observ', 'receptive', 'responsive', 'tolerant','understand']
+    wordlist2 = ['ambitious', 'gentle', 'nice', 'bad', 'sad', 'new']
+    wordlist3 = ['new', 'classy']
+    wordlist4 = ['sad', 'christic']
+    wordlist5 = ['woman', 'man']
 
+    models = ['word2vec100.model', 'word2vec.model']
 
-def display_closestwords_tsnescatterplot(model, word):
-    word_labels = [word]
-    print()
-    close_words = model.wv.most_similar (positive=['beautiful'], topn=40)
+    person5 =[wordlist1, wordlist2, wordlist3, wordlist4, wordlist5]
+    model = gensim.models.Word2Vec.load(models[nummodel])
+    to_find = closestwords_tsnescatterplot(model, person5[personnality], 30, 'conscienscoutness')
+    plt.savefig('haha.png')
+    check_words('./letter.docx', to_find)
 
-    arr = [model.wv[word]]
-    for wrd_score in close_words:
-        wrd_vector = model.wv[wrd_score[0]]
-        word_labels.append(wrd_score[0])
-        arr = np.append(arr, [wrd_vector], axis=0)
-
-    tsne = TSNE(n_components=2, random_state=0)
-    np.set_printoptions(suppress=True)
-    Y = tsne.fit_transform(arr)
-
-    x_coords = Y[:, 0]
-    y_coords = Y[:, 1]
-    plt.scatter(x_coords, y_coords)
-
-    for label, x, y in zip(word_labels, x_coords, y_coords):
-        plt.annotate(label, xy=(x, y), xytext=(0, 0), textcoords='offset points')
-    plt.xlim(x_coords.min() + 0.00005, x_coords.max() + 0.00005)
-    plt.ylim(y_coords.min() + 0.00005, y_coords.max() + 0.00005)
-
-display_closestwords_tsnescatterplot(model, 'nice')
-display_closestwords_tsnescatterplot(model, 'effective')
-
-plt.show()
+if __name__ == '__main__':
+    print (sys.argv)
+    if len(sys.argv) < 3 :
+        print ('please put a model and a personallity trait')
+    draw_plt(int(sys.argv[1]), int(sys.argv[2]))

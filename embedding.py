@@ -2,7 +2,6 @@ import gzip
 import gensim
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-t
 
 def read_input(input_file):
     """This method reads the input file which is in gzip format"""
@@ -19,6 +18,6 @@ def read_input(input_file):
 input_file = 'reviews_data.txt.gz'
 documents = list (read_input (input_file))
 logging.info ("Done reading data file")
-model = gensim.models.Word2Vec (documents, size=150, window=10, min_count=2, workers=10)
+model = gensim.models.Word2Vec (documents, size=150, window=10, min_count=100, workers=10)
 model.train(documents,total_examples=len(documents),epochs=10)
-model.save("word2vec.model")
+model.save("word2vec100.model")

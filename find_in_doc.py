@@ -6,6 +6,7 @@ from docx.enum.text import WD_COLOR_INDEX
 from docx import Document
 from docx.text.run import Font, Run
 from docx.shared import RGBColor
+import copy
 
 
 def findWholeWord(w):
@@ -34,7 +35,9 @@ def check_words(file, words):
         nparagraph.paragraph_format.alignment = paragraph.paragraph_format.alignment
         nparagraph.paragraph_format.left_indent = paragraph.paragraph_format.left_indent
         nparagraph.paragraph_format.right_indent = paragraph.paragraph_format.right_indent
-        nparagraph.paragraph_format.line_spacing = paragraph.paragraph_format.line_spacing
+        nparagraph.paragraph_format.line_spacing = 1
+        nparagraph.paragraph_format.space_after = 0
+        nparagraph.paragraph_format.space_before = paragraph.paragraph_format.space_before
         nparagraph.style.name = paragraph.style.name
         for word in tsentence :
             found = 0
